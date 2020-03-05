@@ -5,7 +5,6 @@ import morena.example.doclist.controller.DoctorController;
 import morena.example.doclist.domain.Address;
 import morena.example.doclist.domain.Doctor;
 import morena.example.doclist.domain.Practice;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,7 +19,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @ExtendWith(SpringExtension.class)
@@ -30,7 +28,6 @@ class DoctorControllerTest extends BaseControllerTest {
     @Test
     void getAllDoctors() throws Exception {
         List<Doctor> doctorList = new ArrayList<Doctor>();
-        Address address = new Address("Karl 1", "Mitte", "Berlin", "Germany", "10245");
         Practice practice = new Practice("BestDoc", "address");
         doctorList.add(new Doctor("Morena", "English", "GP", practice));
         when(doctorService.findAll()).thenReturn(doctorList);
@@ -45,7 +42,6 @@ class DoctorControllerTest extends BaseControllerTest {
         String desiredLanguage = "English";
 
         List<Doctor> doctorList = new ArrayList<>();
-        Address address = new Address("Karl 1", "Mitte", "Berlin", "Germany", "10245");
         Practice practice = new Practice("BestDoc", "address");
         doctorList.add(new Doctor("Morena", desiredLanguage, "GP", practice));
         when(doctorService.findByLanguage(desiredLanguage)).thenReturn(doctorList);

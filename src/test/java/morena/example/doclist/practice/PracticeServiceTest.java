@@ -26,7 +26,6 @@ public class PracticeServiceTest {
 
     @Test
     void getAllPractices() {
-        Address address = new Address("Karl 1", "Mitte", "Berlin", "Germany", "10245");
         Practice practiceSample = new Practice("BestDoc", "Karl 1");
         practiceRepository.save(practiceSample);
         PracticeService practiceService = new PracticeService(practiceRepository);
