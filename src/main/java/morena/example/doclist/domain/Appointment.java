@@ -1,12 +1,14 @@
 package morena.example.doclist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "appointments")
@@ -54,5 +56,16 @@ public class Appointment implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Appointment that = (Appointment) o;
+        return id == that.id &&
+                Objects.equals(patientName, that.patientName) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(doctor, that.doctor);
     }
 }

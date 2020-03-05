@@ -45,4 +45,19 @@ public class Practice {
                 ", address=" + address +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Practice practice = (Practice) o;
+        return id == practice.id &&
+                Objects.equals(name, practice.name) &&
+                Objects.equals(address, practice.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address);
+    }
 }

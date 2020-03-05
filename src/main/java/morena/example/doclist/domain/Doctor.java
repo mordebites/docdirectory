@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "doctors")
@@ -67,5 +68,22 @@ public class Doctor implements Serializable {
                 ", type='" + type + '\'' +
                 ", practice=" + practice +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor doctor = (Doctor) o;
+        return id == doctor.id &&
+                Objects.equals(name, doctor.name) &&
+                Objects.equals(language, doctor.language) &&
+                Objects.equals(type, doctor.type) &&
+                Objects.equals(practice, doctor.practice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, language, type, practice);
     }
 }
