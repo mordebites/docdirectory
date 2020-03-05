@@ -12,4 +12,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Optional<List<Doctor>> findByLanguage(String language);
 
     Optional<List<Doctor>> findByType(String type);
+
+    Optional<List<Doctor>> findByPracticeAddressCityAndPracticeAddressArea(String practiceAddressCity, String practiceAddressArea);
 }

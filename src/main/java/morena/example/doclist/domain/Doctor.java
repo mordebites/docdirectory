@@ -1,6 +1,8 @@
 package morena.example.doclist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,8 +22,9 @@ public class Doctor implements Serializable {
     @NotNull
     private String type;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "practice_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Practice practice;
 
@@ -53,5 +56,16 @@ public class Doctor implements Serializable {
 
     public Practice getPractice() {
         return practice;
+    }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", language='" + language + '\'' +
+                ", type='" + type + '\'' +
+                ", practice=" + practice +
+                '}';
     }
 }

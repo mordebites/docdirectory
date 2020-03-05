@@ -26,7 +26,7 @@ class PracticeControllerTest extends BaseControllerTest {
     @Test
     void getAllPractices() throws Exception {
         List<Practice> practiceList = new ArrayList<Practice>();
-        practiceList.add(new Practice("BestDocs", "Karl 1"));
+        practiceList.add(new Practice("BestDocs", new Address("Karl 1", "Mitte", "Berlin", "Germany", "10178")));
         when(practiceService.findAll()).thenReturn(practiceList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/practices")

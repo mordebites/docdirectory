@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@ComponentScan("morena.example.docdirectory.repository")
 public class PracticeService {
 
     private PracticeRepository practiceRepository;
@@ -20,4 +19,5 @@ public class PracticeService {
     public List<Practice> findAll() {
         return this.practiceRepository.findAll();
     }
+
 }

@@ -2,6 +2,7 @@ package morena.example.doclist.practice;
 
 import morena.example.doclist.domain.Address;
 import morena.example.doclist.domain.Practice;
+import morena.example.doclist.repository.DoctorRepository;
 import morena.example.doclist.repository.PracticeRepository;
 import morena.example.doclist.service.PracticeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,16 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PracticeServiceTest {
 
     @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
     private PracticeRepository practiceRepository;
 
     @BeforeEach
     void init() {
-        practiceRepository.deleteAll();
+        doctorRepository.deleteAll();
+        practiceRepository.deleteAll();;
     }
 
     @Test
     void getAllPractices() {
-        Practice practiceSample = new Practice("BestDoc", "Karl 1");
+        Practice practiceSample = new Practice("BestDoc", new Address("Karl 1", "Mitte", "Berlin", "Germany", "10178"));
         practiceRepository.save(practiceSample);
         PracticeService practiceService = new PracticeService(practiceRepository);
 

@@ -1,5 +1,6 @@
 package morena.example.doclist.doctor;
 
+import morena.example.doclist.domain.Address;
 import morena.example.doclist.domain.Doctor;
 import morena.example.doclist.domain.Practice;
 import morena.example.doclist.repository.DoctorRepository;
@@ -23,7 +24,7 @@ public class DoctorServiceTest {
     @Autowired
     private PracticeRepository practiceRepository;
 
-    private Practice practiceSample = new Practice("BestDoc", "Karl 1");
+    private Practice practiceSample = new Practice("BestDoc", new Address("Karl 1", "Mitte", "Berlin", "Germany", "10178"));
 
 
     @BeforeEach
@@ -53,7 +54,6 @@ public class DoctorServiceTest {
     @Test
     void findDoctorsByLanguage() {
         String desiredLanguage = "English";
-        Practice practice = new Practice("BestDoc", "address");
 
         doctorRepository.save(new Doctor("Morena", desiredLanguage, "GP", practiceSample));
         doctorRepository.save(new Doctor("Akshay", desiredLanguage, "GP", practiceSample));
@@ -81,6 +81,36 @@ public class DoctorServiceTest {
         assertEquals(2, doctorList.size());
         for (Doctor doc : doctorList) {
             assertEquals(desiredType, doc.getType());
+        }
+    }
+
+    @Test
+    void findDoctorsByPracticeCityAndArea() {
+        String desiredArea = "Mitte";
+        String desiredCity = "Berlin";
+
+        Address wrongAreaAddress = new Address("Boxhagener Platz 1", "Friedhain", "Berlin", "Germany", "10245");
+        Practice wrongAreaPractice = new Practice("MehDoc", wrongAreaAddress);
+        practiceRepository.save(wrongAreaPractice);
+
+        Address wrongCityAddress = new Address("Magic Street 1", desiredArea, "Topolinia", "Calisota", "55555");
+        Practice wrongCityPractice = new Practice("BadDoc", wrongCityAddress);
+        practiceRepository.save(wrongCityPractice);
+
+        doctorRepository.save(new Doctor("Morena", "English", "GP", practiceSample));
+        doctorRepository.save(new Doctor("Akshay", "English", "GP", practiceSample));
+        doctorRepository.save(new Doctor("Bob", "Italian", "Pediatrician", wrongAreaPractice));
+        doctorRepository.save(new Doctor("Laura", "German", "Pediatrician", wrongCityPractice));
+
+        DoctorService doctorService = new DoctorService(doctorRepository);
+
+        List<Doctor> doctorList = doctorService.findByPracticeCityAndArea(desiredCity, desiredArea);
+
+        assertEquals(2, doctorList.size());
+        System.out.println(doctorList);
+        for (Doctor doc : doctorList) {
+            assertEquals(desiredCity, doc.getPractice().getAddress().getCity());
+            assertEquals(desiredArea, doc.getPractice().getAddress().getArea());
         }
     }
 }

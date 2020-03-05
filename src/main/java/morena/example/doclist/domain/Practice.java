@@ -2,6 +2,7 @@ package morena.example.doclist.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table(name = "practices")
@@ -14,11 +15,12 @@ public class Practice {
     private String name;
 
     @NotNull
-    private String address;
+    @Embedded
+    private Address address;
 
     public Practice() {}
 
-    public Practice(String name, String address) {
+    public Practice(String name, Address address) {
         this.name = name;
         this.address = address;
     }
@@ -31,8 +33,16 @@ public class Practice {
         return name;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
+    @Override
+    public String toString() {
+        return "Practice{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address=" + address +
+                '}';
+    }
 }

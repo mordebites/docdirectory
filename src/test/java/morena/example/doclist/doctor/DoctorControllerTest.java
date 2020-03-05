@@ -2,6 +2,7 @@ package morena.example.doclist.doctor;
 
 import morena.example.doclist.BaseControllerTest;
 import morena.example.doclist.controller.DoctorController;
+import morena.example.doclist.controller.PracticeController;
 import morena.example.doclist.domain.Address;
 import morena.example.doclist.domain.Doctor;
 import morena.example.doclist.domain.Practice;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -28,7 +30,7 @@ class DoctorControllerTest extends BaseControllerTest {
     @Test
     void getAllDoctors() throws Exception {
         List<Doctor> doctorList = new ArrayList<Doctor>();
-        Practice practice = new Practice("BestDoc", "address");
+        Practice practice = new Practice("BestDoc", new Address("Karl 1", "Mitte", "Berlin", "Germany", "10178"));
         doctorList.add(new Doctor("Morena", "English", "GP", practice));
         when(doctorService.findAll()).thenReturn(doctorList);
 
@@ -42,7 +44,7 @@ class DoctorControllerTest extends BaseControllerTest {
         String desiredLanguage = "English";
 
         List<Doctor> doctorList = new ArrayList<>();
-        Practice practice = new Practice("BestDoc", "address");
+        Practice practice = new Practice("BestDoc", new Address("Karl 1", "Mitte", "Berlin", "Germany", "10178"));
         doctorList.add(new Doctor("Morena", desiredLanguage, "GP", practice));
         when(doctorService.findByLanguage(desiredLanguage)).thenReturn(doctorList);
 

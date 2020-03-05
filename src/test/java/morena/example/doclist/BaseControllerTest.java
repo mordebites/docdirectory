@@ -1,6 +1,7 @@
 package morena.example.doclist;
 
 import morena.example.doclist.controller.DoctorController;
+import morena.example.doclist.service.AppointmentService;
 import morena.example.doclist.service.DoctorService;
 import morena.example.doclist.service.PracticeService;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(DoctorController.class)
 public
 class BaseControllerTest {
 
@@ -24,4 +24,7 @@ class BaseControllerTest {
 
     @MockBean
     protected PracticeService practiceService;
+
+    @MockBean
+    protected AppointmentService appointmentService;
 }
