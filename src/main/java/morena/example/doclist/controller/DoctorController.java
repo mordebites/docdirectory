@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +26,11 @@ public class DoctorController {
     }
 
     @RequestMapping(method = RequestMethod.GET, params = {"language"})
-    public List<Doctor> findDoctorsByLanguage(@RequestParam(name = "language") String language) {
+    public ResponseEntity<List<Doctor>> findDoctorsByLanguage(@RequestParam(name = "language") String language) {
         if (language == null) {
-            return new ArrayList<>();
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
         } else {
-            return doctorService.findByLanguage(language);
+            return new ResponseEntity<>(doctorService.findByLanguage(language), HttpStatus.FOUND);
         }
     }
 }

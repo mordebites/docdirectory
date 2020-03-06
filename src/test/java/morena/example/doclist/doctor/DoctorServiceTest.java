@@ -3,6 +3,7 @@ package morena.example.doclist.doctor;
 import morena.example.doclist.domain.Address;
 import morena.example.doclist.domain.Doctor;
 import morena.example.doclist.domain.Practice;
+import morena.example.doclist.repository.AppointmentRepository;
 import morena.example.doclist.repository.DoctorRepository;
 import morena.example.doclist.repository.PracticeRepository;
 import morena.example.doclist.service.DoctorService;
@@ -23,12 +24,15 @@ public class DoctorServiceTest {
     private DoctorRepository doctorRepository;
     @Autowired
     private PracticeRepository practiceRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     private Practice practiceSample = new Practice("BestDoc", new Address("Karl 1", "Mitte", "Berlin", "Germany", "10178"));
 
 
     @BeforeEach
     void init() {
+        appointmentRepository.deleteAll();
         doctorRepository.deleteAll();
         practiceRepository.deleteAll();
 

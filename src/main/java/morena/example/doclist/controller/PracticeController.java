@@ -20,6 +20,6 @@ public class PracticeController {
 
     @GetMapping("/practices")
     ResponseEntity<List<Practice>> getAllPractices() {
-        return new ResponseEntity<List<Practice>>(practiceService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(practiceService.findAll(), HttpStatus.OK);
     }
 }

@@ -1,15 +1,11 @@
 package morena.example.doclist.service;
 
 import morena.example.doclist.domain.Appointment;
-import morena.example.doclist.domain.Doctor;
+import morena.example.doclist.domain.Reaction;
 import morena.example.doclist.repository.AppointmentRepository;
-import morena.example.doclist.repository.DoctorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,7 +18,24 @@ public class AppointmentService {
         this.appointmentRepository = appointmentRepository;
     }
 
-    public Appointment addAppointment(Appointment appointment){
-       return appointmentRepository.save(appointment);
+    public Appointment addAppointment(Appointment appointment) {
+        return appointmentRepository.save(appointment);
+    }
+
+    public Appointment likeAppointment(long id) throws RuntimeException { //TODO improve exception
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
+        if (optionalAppointment.isEmpty()) throw new RuntimeException();
+        Appointment appToLike = optionalAppointment.get();
+        appToLike.setReaction(Reaction.LIKE);
+        return appointmentRepository.save(appToLike);
+    }
+
+    //TODO extract react method
+    public Appointment dislikeAppointment(long id) throws RuntimeException { //TODO improve exception
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
+        if (optionalAppointment.isEmpty()) throw new RuntimeException();
+        Appointment appToLike = optionalAppointment.get();
+        appToLike.setReaction(Reaction.DISLIKE);
+        return appointmentRepository.save(appToLike);
     }
 }

@@ -1,9 +1,6 @@
 package morena.example.doclist.appointment;
 
-import morena.example.doclist.domain.Address;
-import morena.example.doclist.domain.Appointment;
-import morena.example.doclist.domain.Doctor;
-import morena.example.doclist.domain.Practice;
+import morena.example.doclist.domain.*;
 import morena.example.doclist.repository.AppointmentRepository;
 import morena.example.doclist.repository.DoctorRepository;
 import morena.example.doclist.repository.PracticeRepository;
@@ -13,11 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 public class AppointmentServiceTest {
@@ -56,15 +53,43 @@ public class AppointmentServiceTest {
     void addAppointment() {
         appointmentService.addAppointment(newAppointment);
 
-        Appointment lastAppointment = appointmentRepository.findTopByOrderByIdDesc();
-        assertNotNull(lastAppointment);
+        Appointment lastAppointment = getLastAppointmentInRepo();
         assertEquals(lastAppointment.getPatientName(), newAppointment.getPatientName());
         assertEquals(lastAppointment.getDoctor(), newAppointment.getDoctor());
+        assertEquals(lastAppointment.getReaction(), newAppointment.getReaction());
         assertEqualDates(lastAppointment.getDate(), newAppointment.getDate());
+    }
+
+
+    @Test
+    void likeAppointment(){
+        Appointment savedAppointment = appointmentService.addAppointment(newAppointment);
+        assertEquals(Reaction.NONE, savedAppointment.getReaction());
+
+        appointmentService.likeAppointment(savedAppointment.getId());
+
+        Appointment lastAppointment = getLastAppointmentInRepo();
+        assertEquals(Reaction.LIKE, lastAppointment.getReaction());
+    }
+
+    @Test
+    void dislikeAppointment(){
+        Appointment savedAppointment = appointmentService.addAppointment(newAppointment);
+        assertEquals(Reaction.NONE, savedAppointment.getReaction());
+
+        appointmentService.dislikeAppointment(savedAppointment.getId());
+
+        Appointment lastAppointment = getLastAppointmentInRepo();
+        assertEquals(Reaction.DISLIKE, lastAppointment.getReaction());
     }
 
     private void assertEqualDates(Date date1, Date date2){
         assertEquals(simpleDateFormat.format(date1), simpleDateFormat.format(date2));
     }
-    
+
+    private Appointment getLastAppointmentInRepo(){
+        Appointment lastAppointment = appointmentRepository.findTopByOrderByIdDesc();
+        assertNotNull(lastAppointment);
+        return lastAppointment;
+    }
 }

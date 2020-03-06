@@ -1,12 +1,10 @@
 package morena.example.doclist.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -28,6 +26,9 @@ public class Appointment implements Serializable {
     @JsonIgnore
     private Doctor doctor;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Reaction reaction = Reaction.NONE;
 
     public Appointment() {
     }
@@ -66,6 +67,15 @@ public class Appointment implements Serializable {
         return id == that.id &&
                 Objects.equals(patientName, that.patientName) &&
                 Objects.equals(date, that.date) &&
-                Objects.equals(doctor, that.doctor);
+                Objects.equals(doctor, that.doctor) &&
+                Objects.equals(reaction, that.reaction);
+    }
+
+    public Reaction getReaction() {
+        return reaction;
+    }
+
+    public void setReaction(Reaction reaction) {
+        this.reaction = reaction;
     }
 }
